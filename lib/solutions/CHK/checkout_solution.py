@@ -180,3 +180,6 @@ DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
     return checkout_class.get_price(skus)
 
+if __name__ == '__main__':
+    print(checkout('ABCDEFGHIJKLMNOPQRSTUVWXYZ'))
+
