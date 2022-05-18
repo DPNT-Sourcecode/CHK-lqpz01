@@ -138,7 +138,7 @@ class Checkout:
         for offer in potential_offers:
             while combination > 1 and combination % offer.combination == 0:
                 res += offer.price
-                combination /= offer.combination
+                combination //= offer.combination
             
                     
         return res
@@ -182,4 +182,5 @@ def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
 
 if __name__ == '__main__':
     print(checkout('ABCDEFGHIJKLMNOPQRSTUVWXYZ'))
+
 
