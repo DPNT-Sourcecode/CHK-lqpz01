@@ -1,13 +1,27 @@
-from lib.solutions.HLO import hello_solution
+from lib.solutions.CHK import checkout_solution
 import unittest
 
-class TestHLO(unittest.TestCase):
+class TestCheckout(unittest.TestCase):
     
-    def test_hello(self):
-        self.assertEqual(hello_solution.hello(''), 'Hello, World!')
+    def setUp(self):
+        price_table = """
+        +------+-------+----------------+
+        | Item | Price | Special offers |
+        +------+-------+----------------+
+        | A    | 50    | 3A for 130     |
+        | B    | 30    | 2B for 45      |
+        | C    | 20    |                |
+        | D    | 15    |                |
+        +------+-------+----------------+
+        """
         
-    def test_name_input(self):
-        self.assertEqual(hello_solution.hello('John'), 'Hello, John!')
+        self.checkout = checkout_solution.Checkout(price_table)
+        
+    def test_prices(self):
+        self.assertEqual(self.checkout.get_price('A'), 50)
+        self.assertEqual(self.checkout.get_price('ABC'), 100)
+        self.assertEqual(self.checkout.get_price('A, B, C'), 100)
+        self.assertEqual(self.checkout.get_price('AAAA'), 180)
 
 
 if __name__ == '__main__':
