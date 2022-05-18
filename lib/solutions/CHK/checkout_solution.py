@@ -48,13 +48,25 @@ class Checkout:
         for sku in unique_skus:
             count = skus.count(sku)
             best_offer_count = max(self.prices[sku].keys())
+            # first attempt to get best deal, get full price for the remaider
             if count >= best_offer_count:
                 res += self.prices[sku][best_offer_count] * (count // best_offer_count)
             res += self.prices[sku][1] * (count % best_offer_count)
         return res
         
-            
+DEFAULT_PRICE_TABLE = """
+        +------+-------+----------------+
+        | Item | Price | Special offers |
+        +------+-------+----------------+
+        | A    | 50    | 3A for 130     |
+        | B    | 30    | 2B for 45      |
+        | C    | 20    |                |
+        | D    | 15    |                |
+        +------+-------+----------------+
+        """
+DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 
 def checkout(skus):
-    raise NotImplementedError()
+    return DEFAULT_CHECKOUT_CLASS.get_price(skus)
+
 
