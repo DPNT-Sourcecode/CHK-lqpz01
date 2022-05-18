@@ -30,7 +30,8 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(self.checkout.get_price('ABCx'), -1)
         self.assertEqual(self.checkout.get_price(''), 0)
         
-class TestCheckoutV2(unittest.TestCase):
+class TestCheckoutSecond(unittest.TestCase):
+    
     def setUp(self):
         price_table = """
         +------+-------+------------------------+
@@ -46,7 +47,7 @@ class TestCheckoutV2(unittest.TestCase):
         
         self.checkout = checkout_solution.Checkout(price_table)
         
-    def test_prices(self):
+    def test_second_prices(self):
         self.assertEqual(self.checkout.get_price('A'), 50)
         self.assertEqual(self.checkout.get_price('ABCx'), -1)
         self.assertEqual(self.checkout.get_price('AAAAAA'), 250)
@@ -60,11 +61,8 @@ class TestPrime(unittest.TestCase):
     def test_first_primes(self):
         self.assertEqual([2, 3, 5, 7, 11] == list(checkout_solution.prime_iter()[:5]))
         
-    def test_iteration(self):
-        primes = checkout_solution.prime_iter()
-        self.assertEqual(next(primes), 2)
-        self.assertEqual(next(primes), 3)
-        self.assertEqual(next(primes), 5)
+    
+        
         
         
 class TestSolution(unittest.TestCase):
@@ -88,6 +86,8 @@ class TestSolution(unittest.TestCase):
         
     def test_solution_custom(self):
         self.assertEqual(checkout_solution.checkout('A A A A', self.checkout), 190)
+        
+    
 
 if __name__ == '__main__':
     unittest.main()
