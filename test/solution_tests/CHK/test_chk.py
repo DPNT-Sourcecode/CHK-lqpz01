@@ -86,6 +86,7 @@ class TestCheckoutThird(unittest.TestCase):
         self.assertEqual(self.checkout.get_price('AAAA'), 180)
         self.assertEqual(self.checkout.get_price('EEEEBB'), 160)
         self.assertEqual(self.checkout.get_price('EEEEBBB'), 190)
+        self.assertEqual(self.checkout.get_price('CCC'), 60)
     
     def test_same_free(self):
         self.assertEqual(self.checkout.get_price('FF'), 20)
@@ -132,4 +133,5 @@ class TestSolution(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
 

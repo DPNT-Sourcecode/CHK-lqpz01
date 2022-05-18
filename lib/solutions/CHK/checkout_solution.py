@@ -155,9 +155,11 @@ DEFAULT_PRICE_TABLE = """
         | C    | 20    |                        |
         | D    | 15    |                        |
         | E    | 40    | 2E get one B free      |
+        | F    | 10    | 2F get one F free      |
         +------+-------+------------------------+
         """
 DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 
 def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
     return checkout_class.get_price(skus)
+
