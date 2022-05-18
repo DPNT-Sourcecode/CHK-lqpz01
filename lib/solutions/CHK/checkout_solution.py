@@ -4,7 +4,8 @@
 # skus = unicode string
 import re
 from collections import namedtuple
-import math
+from functools import reduce
+import operator
 
 Item = namedtuple('Item', ['price', 'prime'])
 ItemCombination = namedtuple('ItemCombination', ['price', 'discount', 'combination'])
@@ -110,9 +111,10 @@ class Checkout:
         for offer in offers:
             parse_offer(offer)
             
-        self.prices.sort(key=lambda x: x.discount)
+        
         # sort is stable
         self.prices.sort(key=lambda x: x.combination)
+        self.prices.sort(key=lambda x: x.discount)
             
             
     def get_price(self, skus:str) -> int:
@@ -129,7 +131,7 @@ class Checkout:
         if any(sku not in self.items for sku in skus):
             return -1
         res = 0
-        combination = math.prod(self.items[sku].prime for sku in skus)
+        combination = reduce(operator.mul, [self.items[sku].prime for sku in skus], 1)
         i = 0
         while combination > 1:
             
@@ -159,4 +161,5 @@ def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
 
 if __name__ == '__main__':
     print(checkout('A A A A', checkout))
+
 
