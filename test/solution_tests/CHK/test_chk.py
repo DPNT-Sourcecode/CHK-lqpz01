@@ -30,6 +30,28 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(self.checkout.get_price('ABCx'), -1)
         self.assertEqual(self.checkout.get_price(''), 0)
         
+class TestCheckoutV2(unittest.TestCase):
+    def setUp(self):
+        price_table = """
+        +------+-------+------------------------+
+        | Item | Price | Special offers         |
+        +------+-------+------------------------+
+        | A    | 50    | 3A for 130, 5A for 200 |
+        | B    | 30    | 2B for 45              |
+        | C    | 20    |                        |
+        | D    | 15    |                        |
+        | E    | 40    | 2E get one B free      |
+        +------+-------+------------------------+
+        """
+        
+        self.checkout = checkout_solution.Checkout(price_table)
+        
+    def test_prices(self):
+        self.assertEqual(self.checkout.get_price('A'), 50)
+        self.assertEqual(self.checkout.get_price('ABCx'), -1)
+        self.assertEqual(self.checkout.get_price('AAAAAA'), 250)
+        self.assertEqual(self.checkout.get_price('EEB'), 80)
+        
 
 class TestSolution(unittest.TestCase):
     
@@ -55,3 +77,4 @@ class TestSolution(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
