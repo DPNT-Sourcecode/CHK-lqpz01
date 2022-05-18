@@ -43,7 +43,12 @@ class Checkout:
     def get_price(self, skus:str) -> int:
         """Return total price for all SKUs"""
         # split skus into individual SKUs for commas or spaces
-        skus = re.split(r'[,\s]+', skus)
+        # skus = re.split(r'[,\s]+', skus) # actually allows for more than 
+        # one char sku
+        
+        # remove whitespace and commas
+        skus = re.sub(r'[,\s]+', '', skus)
+        skus = list(skus)
         if not skus:
             return 0
         if any(sku not in self.prices for sku in skus):
@@ -73,3 +78,4 @@ DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 
 def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
     return checkout_class.get_price(skus)
+

@@ -27,6 +27,8 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(self.checkout.get_price('A B C D, D'), 130)
         self.assertEqual(self.checkout.get_price('A   B C,,, D,    D'), 130)
         self.assertEqual(self.checkout.get_price('ABC'), 100)
+        self.assertEqual(self.checkout.get_price('ABCx'), -1)
+        self.assertEqual(self.checkout.get_price(''), 0)
         
 
 class TestSolution(unittest.TestCase):
