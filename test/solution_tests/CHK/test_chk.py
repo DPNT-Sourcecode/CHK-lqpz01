@@ -127,7 +127,7 @@ class TestCheckoutFourth(unittest.TestCase):
         self.assertEqual(self.checkout.get_price('H'*11+'U'*4), 90+120)
         
   
-class TestFavour(unittest.TestCase):
+class TestCheckoutFavour(unittest.TestCase):
     
     def setUp(self):
         price_table = """
@@ -189,3 +189,4 @@ class TestSolution(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
