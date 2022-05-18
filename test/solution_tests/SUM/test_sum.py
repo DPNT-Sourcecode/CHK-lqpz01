@@ -1,6 +1,7 @@
 from lib.solutions.SUM import sum_solution
 import unittest
 
+
 class TestSum(unittest.TestCase):
     
     def test_sum(self):
