@@ -100,12 +100,13 @@ class Checkout:
             for offer in offers:
                 if not offer:
                     continue
-                if 'for' in offer:
-                    parse_for_offer(offer)
+                
                 elif 'get one' in offer:
                     parse_one_free_offer(offer)
                 elif 'buy any' in offer:
                     parse_buy_any(offer)
+                elif 'for' in offer:
+                    parse_for_offer(offer)
                 else:
                     raise NotImplementedError('Unknown offer type')
             
@@ -197,4 +198,6 @@ DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
     return checkout_class.get_price(skus)
 
+if __name__ == '__main__':
+    print(checkout('STXX'))
 
