@@ -6,6 +6,7 @@ import re
 from collections import namedtuple
 from functools import reduce
 import operator
+from itertools import combinations_with_replacement
 
 Item = namedtuple('Item', ['price', 'prime'])
 ItemCombination = namedtuple('ItemCombination', ['price', 'discount', 'combination'])
@@ -53,7 +54,6 @@ class Checkout:
             
             def parse_for_offer(offer:str) -> None:
                 offer = offer.split(' for ')
-                # assumes offer is always same item as item in that row
                 offer_count = int(re.sub(r'[^\d]', '', offer[0]))
                 offer_item = re.sub(r'[^a-zA-Z]', '', offer[0])
                 offer_price = int(offer[1].strip())
@@ -68,7 +68,6 @@ class Checkout:
             
             def parse_one_free_offer(offer:str) -> None:
                 offer = offer.split(' ')
-                # assumes offer is always same item as item in that row
                 offer_count = int(re.sub(r'[^\d]', '', offer[0]))
                 offer_item = re.sub(r'[^a-zA-Z]', '', offer[0])
                 offer_free_item = offer[3].strip()
@@ -80,8 +79,24 @@ class Checkout:
                     discount=offer_discount,
                     combination=offer_combination
                 ))
-            
-            offers = offer.split(',')
+                
+            def parse_buy_any(offer:str) -> None:
+                # perhaps not the most efficient way, but keeps with the theme
+                # of the implementation without adding a seperate ItemCombination class
+                offer = offer.split(' ')
+                offer_count = int(offer[2].strip())
+                offer_items = list(re.sub(r'[^a-zA-Z]', '', offer[4]))
+                offer_price = int(offer[-1].strip())
+                for item_combination in combinations_with_replacement(offer_items, offer_count):
+                    offer_discount = sum([self.items[item].price for item in item_combination]) - offer_price
+                    offer_combination = reduce(operator.mul, [self.items[item].prime for item in item_combination], 1)
+                    self.prices.append(ItemCombination(
+                        price=offer_price,
+                        discount=offer_discount,
+                        combination=offer_combination
+                    ))
+                
+            offers = offer.split(', ')
             for offer in offers:
                 if not offer:
                     continue
@@ -89,6 +104,8 @@ class Checkout:
                     parse_for_offer(offer)
                 elif 'get one' in offer:
                     parse_one_free_offer(offer)
+                elif 'buy any' in offer:
+                    parse_buy_any(offer)
                 else:
                     raise NotImplementedError('Unknown offer type')
             
@@ -115,9 +132,6 @@ class Checkout:
             
     def get_price(self, skus:str) -> int:
         """Return total price for all SKUs"""
-        # split skus into individual SKUs for commas or spaces
-        # skus = re.split(r'[,\s]+', skus) # actually allows for more than 
-        # one char sku
         
         # remove whitespace and commas
         skus = re.sub(r'[,\s]+', '', skus)
@@ -147,39 +161,40 @@ class Checkout:
         return res
         
 DEFAULT_PRICE_TABLE = """
-        +------+-------+------------------------+
-        | Item | Price | Special offers         |
-        +------+-------+------------------------+
-        | A    | 50    | 3A for 130, 5A for 200 |
-        | B    | 30    | 2B for 45              |
-        | C    | 20    |                        |
-        | D    | 15    |                        |
-        | E    | 40    | 2E get one B free      |
-        | F    | 10    | 2F get one F free      |
-        | G    | 20    |                        |
-        | H    | 10    | 5H for 45, 10H for 80  |
-        | I    | 35    |                        |
-        | J    | 60    |                        |
-        | K    | 80    | 2K for 150             |
-        | L    | 90    |                        |
-        | M    | 15    |                        |
-        | N    | 40    | 3N get one M free      |
-        | O    | 10    |                        |
-        | P    | 50    | 5P for 200             |
-        | Q    | 30    | 3Q for 80              |
-        | R    | 50    | 3R get one Q free      |
-        | S    | 30    |                        |
-        | T    | 20    |                        |
-        | U    | 40    | 3U get one U free      |
-        | V    | 50    | 2V for 90, 3V for 130  |
-        | W    | 20    |                        |
-        | X    | 90    |                        |
-        | Y    | 10    |                        |
-        | Z    | 50    |                        |
-        +------+-------+------------------------+
+        +------+-------+---------------------------------+
+        | Item | Price | Special offers                  |
+        +------+-------+---------------------------------+
+        | A    | 50    | 3A for 130, 5A for 200          |
+        | B    | 30    | 2B for 45                       |
+        | C    | 20    |                                 |
+        | D    | 15    |                                 |
+        | E    | 40    | 2E get one B free               |
+        | F    | 10    | 2F get one F free               |
+        | G    | 20    |                                 |
+        | H    | 10    | 5H for 45, 10H for 80           |
+        | I    | 35    |                                 |
+        | J    | 60    |                                 |
+        | K    | 70    | 2K for 120                      |
+        | L    | 90    |                                 |
+        | M    | 15    |                                 |
+        | N    | 40    | 3N get one M free               |
+        | O    | 10    |                                 |
+        | P    | 50    | 5P for 200                      |
+        | Q    | 30    | 3Q for 80                       |
+        | R    | 50    | 3R get one Q free               |
+        | S    | 20    | buy any 3 of (S,T,X,Y,Z) for 45 |
+        | T    | 20    | buy any 3 of (S,T,X,Y,Z) for 45 |
+        | U    | 40    | 3U get one U free               |
+        | V    | 50    | 2V for 90, 3V for 130           |
+        | W    | 20    |                                 |
+        | X    | 17    | buy any 3 of (S,T,X,Y,Z) for 45 |
+        | Y    | 20    | buy any 3 of (S,T,X,Y,Z) for 45 |
+        | Z    | 21    | buy any 3 of (S,T,X,Y,Z) for 45 |
+        +------+-------+---------------------------------+
         """
 DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 
 def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
     return checkout_class.get_price(skus)
+
 
