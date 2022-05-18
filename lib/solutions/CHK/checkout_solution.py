@@ -2,6 +2,7 @@
 
 # noinspection PyUnusedLocal
 # skus = unicode string
+import re
 
 class Checkout:
     """Class to interact with price table
@@ -36,7 +37,22 @@ class Checkout:
             
     def get_price(self, skus:str) -> int:
         """Return total price for all SKUs"""
-        skus = skus
+        # split skus into individual SKUs for commas or spaces
+        skus = re.split(r'[,\s]+', skus)
+        if not skus:
+            return -1
+        if any(sku not in self.prices for sku in skus):
+            return -1
+        unique_skus = set(skus)
+        res = 0
+        for sku in unique_skus:
+            count = skus.count(sku)
+            best_offer_count = max(self.prices[sku].keys())
+            if count >= best_offer_count:
+                res += self.prices[sku][best_offer_count] * (count // best_offer_count)
+            res += self.prices[sku][1] * (count % best_offer_count)
+        return res
+        
             
 
 def checkout(skus):

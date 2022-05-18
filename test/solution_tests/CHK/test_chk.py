@@ -22,6 +22,7 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(self.checkout.get_price('A B C'), 100)
         self.assertEqual(self.checkout.get_price('A, B, C'), 100)
         self.assertEqual(self.checkout.get_price('A A A A'), 180)
+        self.assertEqual(self.checkout.get_price('A A A A A A A'), 130*2 + 50)
         self.assertEqual(self.checkout.get_price('A B F'), -1)
         
 
@@ -42,7 +43,7 @@ class TestSolution(unittest.TestCase):
         self.checkout = checkout_solution.Checkout(price_table)
         
     def test_solution(self):
-        self.assertEqual(checkout_solution.checkout('AAAA'), 180)
+        self.assertEqual(checkout_solution.checkout('A A A A'), 180)
 
 if __name__ == '__main__':
     unittest.main()
