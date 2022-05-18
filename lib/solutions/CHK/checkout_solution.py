@@ -113,8 +113,9 @@ class Checkout:
             
         
         # sort is stable
-        self.prices.sort(key=lambda x: x.combination)
-        self.prices.sort(key=lambda x: x.discount)
+        self.prices.sort(key=lambda x: x.discount, reverse=True)
+        self.prices.sort(key=lambda x: x.combination, reverse=True)
+        
             
             
     def get_price(self, skus:str) -> int:
@@ -134,7 +135,6 @@ class Checkout:
         combination = reduce(operator.mul, [self.items[sku].prime for sku in skus], 1)
         i = 0
         while combination > 1:
-            
             if combination >= self.prices[i].combination and combination % self.prices[i].combination == 0:
                 res += self.prices[i].price
                 combination /= self.prices[i].combination
@@ -161,5 +161,3 @@ def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
 
 if __name__ == '__main__':
     print(checkout('A A A A', checkout))
-
-
