@@ -21,7 +21,7 @@ class Checkout:
         # prices are stored in a dict
         self.prices: dict[str, tuple[int, int]] = {}
         for line in price_table.splitlines()[3:-1]:
-            item, price, offer = line.split('|')
+            item, price, offer = line.split('|')[1:4]
             item = item.strip()
             price = int(price.strip())
             offer = offer.split(' for ')
@@ -36,5 +36,3 @@ class Checkout:
 
 def checkout(skus):
     raise NotImplementedError()
-
-
