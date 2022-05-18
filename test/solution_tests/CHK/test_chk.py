@@ -35,7 +35,7 @@ class TestSolution(unittest.TestCase):
         +------+-------+----------------+
         | Item | Price | Special offers |
         +------+-------+----------------+
-        | A    | 50    | 3A for 130     |
+        | A    | 60    | 3A for 130     |
         | B    | 30    | 2B for 45      |
         | C    | 20    |                |
         | D    | 15    |                |
@@ -44,8 +44,11 @@ class TestSolution(unittest.TestCase):
         
         self.checkout = checkout_solution.Checkout(price_table)
         
-    def test_solution(self):
+    def test_solution_default(self):
         self.assertEqual(checkout_solution.checkout('A A A A'), 180)
+        
+    def test_solution_custom(self):
+        self.assertEqual(checkout_solution.checkout('A A A A', self.checkout), 190)
 
 if __name__ == '__main__':
     unittest.main()
