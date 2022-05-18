@@ -45,7 +45,7 @@ class Checkout:
         # split skus into individual SKUs for commas or spaces
         skus = re.split(r'[,\s]+', skus)
         if not skus:
-            return -1
+            return 0
         if any(sku not in self.prices for sku in skus):
             return -1
         unique_skus = set(skus)
@@ -73,6 +73,3 @@ DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 
 def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
     return checkout_class.get_price(skus)
-
-
-
