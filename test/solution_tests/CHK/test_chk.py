@@ -125,6 +125,7 @@ class TestCheckoutFourth(unittest.TestCase):
     def test_larger_list(self):
         self.assertEqual(self.checkout.get_price('H'*11), 80+10)
         self.assertEqual(self.checkout.get_price('H'*11+'U'*4), 90+120)
+        self.assertEqual(self.checkout.get_price('ABCDEF'), 165)
         self.assertEqual(self.checkout.get_price('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 965)
         
   
@@ -194,5 +195,6 @@ class TestSolution(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
 
 
