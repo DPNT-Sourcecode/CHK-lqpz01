@@ -5,6 +5,7 @@
 import re
 from collections import namedtuple
 
+Item = namedtuple('Item', ['price', 'prime'])
 ItemCombination = namedtuple('ItemCombination', ['price', 'discount', 'combination'])
 
 def prime_iter():
@@ -70,15 +71,16 @@ class Checkout:
         
         self.prices: list[ItemCombination] = []
         
+        # itmes stores each item with its corresponding prime number and price
         items: dict[str, int] = {}
         offers: list[str] =[]
-        
+        primes = prime_iter()[:len(price_table.splitlines())]
         for line in price_table.splitlines()[3:-1]:
             item, price, offer = line.split('|')[1:4]
             item = item.strip()
             price = int(price.strip())
             offer = offer.strip()
-            items[item] = price
+            items[item] = Item(price, next(prime_iter()))
             self.prices.append
             offers.append(offer)
             
@@ -122,3 +124,4 @@ DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 
 def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
     return checkout_class.get_price(skus)
+

@@ -57,7 +57,13 @@ class TestPrime(unittest.TestCase):
     
     def test_first_primes(self):
         self.assertEqual([2, 3, 5, 7, 11] == list(checkout_solution.prime_iter()[:5]))
-
+        
+    def test_iteration(self):
+        self.assertEqual(next(checkout_solution.prime_iter), 2)
+        self.assertEqual(next(checkout_solution.prime_iter), 3)
+        self.assertEqual(next(checkout_solution.prime_iter), 5)
+        
+        
 class TestSolution(unittest.TestCase):
     
     def setUp(self) -> None:
