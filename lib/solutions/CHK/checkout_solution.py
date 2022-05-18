@@ -18,6 +18,11 @@ class Checkout:
     """
     
     def __init__(self, price_table:str):
+        """initialise the price table
+
+        Args:
+            price_table (str): price table as string
+        """
         price_table = price_table.strip()
         # prices are stored in a dict holding sku as key pointing to a dict
         # key-value pairs of count, price self.prices['A'] = {1: 50, 3: 130}
@@ -66,7 +71,8 @@ DEFAULT_PRICE_TABLE = """
         """
 DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 
-def checkout(skus):
-    return DEFAULT_CHECKOUT_CLASS.get_price(skus)
+def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
+    return checkout_class.get_price(skus)
+
 
 
