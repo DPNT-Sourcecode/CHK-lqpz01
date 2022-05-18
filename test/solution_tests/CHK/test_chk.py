@@ -55,11 +55,16 @@ class TestCheckoutSecond(unittest.TestCase):
         self.assertEqual(self.checkout.get_price('AAAAA'), 200)
         self.assertEqual(self.checkout.get_price('AAAA'), 180)
         self.assertEqual(self.checkout.get_price('EEEEBB'), 160)
+        self.assertEqual(self.checkout.get_price('EEEEBBB'), 190)
 
 class TestPrime(unittest.TestCase):
     
     def test_first_primes(self):
-        self.assertEqual([2, 3, 5, 7, 11] == list(checkout_solution.prime_iter()[:5]))
+        primes = checkout_solution.prime_iter()
+        self.assertEqual(next(primes), 2)
+        self.assertEqual(next(primes), 3)
+        self.assertEqual(next(primes), 5)
+        self.assertEqual(next(primes), 7)
         
     
         
