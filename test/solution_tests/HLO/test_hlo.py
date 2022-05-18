@@ -3,12 +3,12 @@ import unittest
 
 class TestHLO(unittest.TestCase):
     
-    def test_empty_input(self):
-        self.assertEqual(hello_solution.hello(''), 'Hello, World!')
+    def test_hello(self):
+        self.assertEqual(hello_solution.hello('Mr. X'), 'Hello, World!')
         
-    def test_name_input(self):
-        self.assertEqual(hello_solution.hello('John'), 'Hello, John!')
+   
 
 
 if __name__ == '__main__':
     unittest.main()
+
