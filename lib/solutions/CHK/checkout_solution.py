@@ -111,11 +111,6 @@ class Checkout:
         for offer in offers:
             parse_offer(offer)
             
-        
-        # sort is stable
-        self.prices.sort(key=lambda x: x.discount, reverse=True)
-        self.prices.sort(key=lambda x: x.combination, reverse=True)
-        
             
             
     def get_price(self, skus:str) -> int:
@@ -134,7 +129,7 @@ class Checkout:
         res = 0
         combination = reduce(operator.mul, [self.items[sku].prime for sku in skus], 1)
         potential_offers = list(filter(
-            lambda x: x.combination <= combination and combination % x.combination == 0, 
+            lambda x: combination % x.combination == 0, 
             self.prices
             ))
         #sort is stable
@@ -184,3 +179,4 @@ DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 
 def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
     return checkout_class.get_price(skus)
+
