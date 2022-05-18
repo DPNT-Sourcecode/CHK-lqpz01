@@ -27,7 +27,13 @@ class TestCheckout(unittest.TestCase):
         self.assertEqual(self.checkout.get_price('A B C D, D'), 130)
         self.assertEqual(self.checkout.get_price('A   B C,,, D,    D'), 130)
         self.assertEqual(self.checkout.get_price('ABC'), 100)
+        
+        
+        
+    def test_invalid(self):
         self.assertEqual(self.checkout.get_price('ABCx'), -1)
+        
+    def test_empty(self):
         self.assertEqual(self.checkout.get_price(''), 0)
         
 class TestCheckoutSecond(unittest.TestCase):
@@ -47,13 +53,6 @@ class TestCheckoutSecond(unittest.TestCase):
         
         self.checkout = checkout_solution.Checkout(price_table)
         
-    def test_prices(self):
-        self.assertEqual(self.checkout.get_price('A'), 50)
-        self.assertEqual(self.checkout.get_price('ABCx'), -1)
-        self.assertEqual(self.checkout.get_price('AAAAAA'), 250)
-        self.assertEqual(self.checkout.get_price('EEB'), 80)
-        self.assertEqual(self.checkout.get_price('AAAAA'), 200)
-        self.assertEqual(self.checkout.get_price('AAAA'), 180)
         
     def test_free(self):
         self.assertEqual(self.checkout.get_price('EEEEBB'), 160)
@@ -77,16 +76,6 @@ class TestCheckoutThird(unittest.TestCase):
         
         self.checkout = checkout_solution.Checkout(price_table)
         
-    def test_prices(self):
-        self.assertEqual(self.checkout.get_price('A'), 50)
-        self.assertEqual(self.checkout.get_price('ABCx'), -1)
-        self.assertEqual(self.checkout.get_price('AAAAAA'), 250)
-        self.assertEqual(self.checkout.get_price('EEB'), 80)
-        self.assertEqual(self.checkout.get_price('AAAAA'), 200)
-        self.assertEqual(self.checkout.get_price('AAAA'), 180)
-        self.assertEqual(self.checkout.get_price('EEEEBB'), 160)
-        self.assertEqual(self.checkout.get_price('EEEEBBB'), 190)
-        self.assertEqual(self.checkout.get_price('CCC'), 60)
     
     def test_same_free(self):
         self.assertEqual(self.checkout.get_price('FF'), 20)
@@ -133,5 +122,6 @@ class TestSolution(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
 
 
