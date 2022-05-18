@@ -125,6 +125,7 @@ class TestCheckoutFourth(unittest.TestCase):
     def test_larger_list(self):
         self.assertEqual(self.checkout.get_price('H'*11), 80+10)
         self.assertEqual(self.checkout.get_price('H'*11+'U'*4), 90+120)
+        self.assertEqual(self.checkout.get_price('ABCDEFGHIJKLMNOPQRSTUVWXYZ'), 965)
         
   
 class TestCheckoutFavour(unittest.TestCase):
@@ -148,7 +149,8 @@ class TestCheckoutFavour(unittest.TestCase):
     def test_favour(self):   
         self.assertEqual(self.checkout.get_price('AAAAAA'), 200)
         self.assertEqual(self.checkout.get_price('AAAAAAFF'), 220)   
-        self.assertEqual(self.checkout.get_price('BBEE'), 20+40*2)      
+        self.assertEqual(self.checkout.get_price('BBEE'), 20+40*2) 
+        
 
 class TestPrime(unittest.TestCase):
     
@@ -158,7 +160,10 @@ class TestPrime(unittest.TestCase):
         self.assertEqual(next(primes), 3)
         self.assertEqual(next(primes), 5)
         self.assertEqual(next(primes), 7)
-        
+        self.assertEqual(next(primes), 11)
+        self.assertEqual(next(primes), 13)
+        self.assertEqual(next(primes), 17)
+        self.assertEqual(next(primes), 19)
     
         
         
@@ -189,4 +194,5 @@ class TestSolution(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
 
