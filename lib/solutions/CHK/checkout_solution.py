@@ -74,13 +74,13 @@ class Checkout:
         # itmes stores each item with its corresponding prime number and price
         items: dict[str, int] = {}
         offers: list[str] =[]
-        primes = prime_iter()[:len(price_table.splitlines())]
+        primes = prime_iter()
         for line in price_table.splitlines()[3:-1]:
             item, price, offer = line.split('|')[1:4]
             item = item.strip()
             price = int(price.strip())
             offer = offer.strip()
-            items[item] = Item(price, next(prime_iter()))
+            items[item] = Item(price, next(primes))
             self.prices.append
             offers.append(offer)
             
@@ -124,4 +124,5 @@ DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 
 def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
     return checkout_class.get_price(skus)
+
 
