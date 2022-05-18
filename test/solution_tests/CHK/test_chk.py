@@ -51,7 +51,9 @@ class TestCheckoutV2(unittest.TestCase):
         self.assertEqual(self.checkout.get_price('ABCx'), -1)
         self.assertEqual(self.checkout.get_price('AAAAAA'), 250)
         self.assertEqual(self.checkout.get_price('EEB'), 80)
-        
+        self.assertEqual(self.checkout.get_price('AAAAA'), 200)
+        self.assertEqual(self.checkout.get_price('AAAA'), 180)
+        self.assertEqual(self.checkout.get_price('EEEEBB'), 160)
 
 class TestPrime(unittest.TestCase):
     
