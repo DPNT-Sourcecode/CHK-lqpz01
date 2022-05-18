@@ -133,13 +133,16 @@ class Checkout:
             return -1
         res = 0
         combination = reduce(operator.mul, [self.items[sku].prime for sku in skus], 1)
-        i = 0
-        while combination > 1:
-            if combination >= self.prices[i].combination and combination % self.prices[i].combination == 0:
-                res += self.prices[i].price
-                combination /= self.prices[i].combination
-            else:
-                i += 1
+        potential_offers = sorted(list(filter(
+            lambda x: x.combination <= combination and combination % x.combination == 0, 
+            self.prices
+            )), key=lambda x: x.discount, reverse=True)
+        
+        for offer in potential_offers:
+            while combination > 1 and combination % offer.combination == 0:
+                res += offer.price
+                combination /= offer.combination
+            
                     
         return res
         
@@ -158,6 +161,3 @@ DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 
 def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
     return checkout_class.get_price(skus)
-
-if __name__ == '__main__':
-    print(checkout('A A A A', checkout))
