@@ -47,7 +47,7 @@ class TestCheckoutSecond(unittest.TestCase):
         
         self.checkout = checkout_solution.Checkout(price_table)
         
-    def test_second_prices(self):
+    def test_prices(self):
         self.assertEqual(self.checkout.get_price('A'), 50)
         self.assertEqual(self.checkout.get_price('ABCx'), -1)
         self.assertEqual(self.checkout.get_price('AAAAAA'), 250)
@@ -56,6 +56,37 @@ class TestCheckoutSecond(unittest.TestCase):
         self.assertEqual(self.checkout.get_price('AAAA'), 180)
         self.assertEqual(self.checkout.get_price('EEEEBB'), 160)
         self.assertEqual(self.checkout.get_price('EEEEBBB'), 190)
+        
+class TestCheckoutThird(unittest.TestCase):
+    
+    def setUp(self):
+        price_table = """
+        +------+-------+------------------------+
+        | Item | Price | Special offers         |
+        +------+-------+------------------------+
+        | A    | 50    | 3A for 130, 5A for 200 |
+        | B    | 30    | 2B for 45              |
+        | C    | 20    |                        |
+        | D    | 15    |                        |
+        | E    | 40    | 2E get one B free      |
+        | F    | 10    | 2F get one F free      |
+        +------+-------+------------------------+
+        """
+        
+        self.checkout = checkout_solution.Checkout(price_table)
+        
+    def test_prices(self):
+        self.assertEqual(self.checkout.get_price('A'), 50)
+        self.assertEqual(self.checkout.get_price('ABCx'), -1)
+        self.assertEqual(self.checkout.get_price('AAAAAA'), 250)
+        self.assertEqual(self.checkout.get_price('EEB'), 80)
+        self.assertEqual(self.checkout.get_price('AAAAA'), 200)
+        self.assertEqual(self.checkout.get_price('AAAA'), 180)
+        self.assertEqual(self.checkout.get_price('EEEEBB'), 160)
+        self.assertEqual(self.checkout.get_price('EEEEBBB'), 190)
+        
+        self.assertEqual(self.checkout.get_price('FF'), 20)
+        self.assertEqual(self.checkout.get_price('FFF'), 20)
 
 class TestPrime(unittest.TestCase):
     
