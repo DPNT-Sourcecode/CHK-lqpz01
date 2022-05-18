@@ -200,4 +200,3 @@ def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
 
 if __name__ == '__main__':
     print(checkout('STXX'))
-
