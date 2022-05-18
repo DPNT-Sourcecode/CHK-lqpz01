@@ -3,18 +3,40 @@
 # noinspection PyUnusedLocal
 # skus = unicode string
 import re
+from collections import namedtuple
+
+ItemCombination = namedtuple('ItemCombination', ['price', 'discount', 'combination'])
+
+def prime_iter():
+    """iterate over prime numbers, does not end"""
+    
+    def is_prime(n):
+        if n < 2:
+            return False
+        for i in range(2, int(n**0.5)+1):
+            if n % i == 0:
+                return False
+        return True
+    
+    current = 1
+    while True:
+        current += 1
+        if is_prime(current):
+            yield current
+        
 
 class Checkout:
     """Class to interact with price table
     Example Table:
-    +------+-------+----------------+
-    | Item | Price | Special offers |
-    +------+-------+----------------+
-    | A    | 50    | 3A for 130     |
-    | B    | 30    | 2B for 45      |
-    | C    | 20    |                |
-    | D    | 15    |                |
-    +------+-------+----------------+
+    +------+-------+------------------------+
+    | Item | Price | Special offers         |
+    +------+-------+------------------------+
+    | A    | 50    | 3A for 130, 5A for 200 |
+    | B    | 30    | 2B for 45              |
+    | C    | 20    |                        |
+    | D    | 15    |                        |
+    | E    | 40    | 2E get one B free      |
+    +------+-------+------------------------+
     """
     
     def __init__(self, price_table:str):
@@ -24,24 +46,42 @@ class Checkout:
             price_table (str): price table as string
         """
         
-        
-        
+        def parse_offers(offer:str) -> None:
+            
+            def parse_for_offer(offer:str) -> None:
+                offer = offer.split(' for ')
+                # assumes offer is always same item as item in that row
+                offer_count = int(offer[0].strip().replace(item, ''))
+                offer_price = int(offer[1].strip())
+            
+            def parse_get_offer(offer:str) -> None:
+                pass
+            
+            offers = offer.split(',')
+            for offer in offers:
+                if 'for' in offer:
+                    parse_for_offer(offer)
+                elif 'get' in offer:
+                    parse_get_offer(offer)
+                else:
+                    raise NotImplementedError('Unknown offer type')
+            
         price_table = price_table.strip()
-        # prices are stored in a dict holding sku as key pointing to a dict
-        # key-value pairs of count, price self.prices['A'] = {1: 50, 3: 130}
-        self.prices: dict[str, tuple[int, int]] = {}
+        
+        self.prices: list[ItemCombination] = []
+        
+        items: dict[str, int] = {}
+        offers: list[str] =[]
+        
         for line in price_table.splitlines()[3:-1]:
             item, price, offer = line.split('|')[1:4]
             item = item.strip()
             price = int(price.strip())
             offer = offer.strip()
-            self.prices[item] = {1: price}
-            if offer:
-                offer = offer.split(' for ')
-                # assumes offer is always same item as item in that row
-                offer_count = int(offer[0].strip().replace(item, ''))
-                offer_price = int(offer[1].strip())
-                self.prices[item][offer_count] = offer_price
+            items[item] = price
+            self.prices.append
+            offers.append(offer)
+            
             
     def get_price(self, skus:str) -> int:
         """Return total price for all SKUs"""
