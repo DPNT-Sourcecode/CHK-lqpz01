@@ -82,6 +82,8 @@ class Checkout:
             
             offers = offer.split(',')
             for offer in offers:
+                if not offer:
+                    continue
                 if 'for' in offer:
                     parse_for_offer(offer)
                 elif 'get one' in offer:
@@ -154,4 +156,7 @@ DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 
 def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
     return checkout_class.get_price(skus)
+
+if __name__ == '__main__':
+    print(checkout('A A A A', checkout))
 
