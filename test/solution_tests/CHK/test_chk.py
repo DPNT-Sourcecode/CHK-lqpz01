@@ -172,7 +172,9 @@ class TestCheckoutFifth(unittest.TestCase):
     def test_any_list(self):
         
         self.assertEqual(self.checkout.get_price('STXX'), 45+17)
-        
+        self.assertEqual(self.checkout.get_price('TTXX'), 45+17)
+        self.assertEqual(self.checkout.get_price('WXYZ'), 45+20)
+        self.assertEqual(self.checkout.get_price('TXYZ'), 45+17)
   
 class TestCheckoutFavour(unittest.TestCase):
     
@@ -240,3 +242,4 @@ class TestSolution(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
