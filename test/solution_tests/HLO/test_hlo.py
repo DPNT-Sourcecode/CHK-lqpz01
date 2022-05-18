@@ -1,10 +1,13 @@
-from lib.solutions.SUM import sum_solution
+from lib.solutions.HLO import hello_solution
 import unittest
 
-class TestSum(unittest.TestCase):
+class TestHLO(unittest.TestCase):
     
-    def test_sum(self):
-        self.assertEqual(sum_solution.compute(1, 2), 3)
+    def test_empty_input(self):
+        self.assertEqual(hello_solution.hello(''), 'Hello, World!')
+        
+    def test_name_input(self):
+        self.assertEqual(hello_solution.hello('John'), 'Hello, John!')
 
 
 if __name__ == '__main__':
