@@ -138,6 +138,9 @@ class Checkout:
         for offer in potential_offers:
             while combination > 1 and combination % offer.combination == 0:
                 res += offer.price
+                # rounding down is important for large numbers,
+                # // negates the need for a special case for LARGE numbers in 
+                # python3 
                 combination //= offer.combination
             
                     
@@ -179,8 +182,4 @@ DEFAULT_CHECKOUT_CLASS = Checkout(DEFAULT_PRICE_TABLE)
 
 def checkout(skus, checkout_class=DEFAULT_CHECKOUT_CLASS):
     return checkout_class.get_price(skus)
-
-if __name__ == '__main__':
-    print(checkout('ABCDEFGHIJKLMNOPQRSTUVWXYZ'))
-
 
