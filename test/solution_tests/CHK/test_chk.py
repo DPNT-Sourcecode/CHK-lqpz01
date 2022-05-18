@@ -54,6 +54,8 @@ class TestCheckoutSecond(unittest.TestCase):
         self.assertEqual(self.checkout.get_price('EEB'), 80)
         self.assertEqual(self.checkout.get_price('AAAAA'), 200)
         self.assertEqual(self.checkout.get_price('AAAA'), 180)
+        
+    def test_free(self):
         self.assertEqual(self.checkout.get_price('EEEEBB'), 160)
         self.assertEqual(self.checkout.get_price('EEEEBBB'), 190)
         
@@ -84,9 +86,12 @@ class TestCheckoutThird(unittest.TestCase):
         self.assertEqual(self.checkout.get_price('AAAA'), 180)
         self.assertEqual(self.checkout.get_price('EEEEBB'), 160)
         self.assertEqual(self.checkout.get_price('EEEEBBB'), 190)
-        
+    
+    def test_same_free(self):
         self.assertEqual(self.checkout.get_price('FF'), 20)
         self.assertEqual(self.checkout.get_price('FFF'), 20)
+        self.assertEqual(self.checkout.get_price('FFFF'), 30)
+        self.assertEqual(self.checkout.get_price('FFFFF'), 40)
 
 class TestPrime(unittest.TestCase):
     
@@ -127,3 +132,4 @@ class TestSolution(unittest.TestCase):
 
 if __name__ == '__main__':
     unittest.main()
+
