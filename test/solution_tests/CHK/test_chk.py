@@ -19,10 +19,10 @@ class TestCheckout(unittest.TestCase):
         
     def test_prices(self):
         self.assertEqual(self.checkout.get_price('A'), 50)
-        self.assertEqual(self.checkout.get_price('ABC'), 100)
+        self.assertEqual(self.checkout.get_price('A B C'), 100)
         self.assertEqual(self.checkout.get_price('A, B, C'), 100)
-        self.assertEqual(self.checkout.get_price('AAAA'), 180)
-        self.assertEqual(self.checkout.get_price('ABF'), -1)
+        self.assertEqual(self.checkout.get_price('A A A A'), 180)
+        self.assertEqual(self.checkout.get_price('A B F'), -1)
         
 
 class TestSolution(unittest.TestCase):

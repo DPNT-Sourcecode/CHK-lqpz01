@@ -18,16 +18,21 @@ class Checkout:
     
     def __init__(self, price_table:str):
         price_table = price_table.strip()
-        # prices are stored in a dict
+        # prices are stored in a dict holding sku as key pointing to a dict
+        # key-value pairs of count, price self.prices['A'] = {1: 50, 3: 130}
         self.prices: dict[str, tuple[int, int]] = {}
         for line in price_table.splitlines()[3:-1]:
             item, price, offer = line.split('|')[1:4]
             item = item.strip()
             price = int(price.strip())
-            offer = offer.split(' for ')
-            offer_count = int(offer[0].strip()[:-1])
-            offer_price = int(offer[1].strip())
-            self.prices[item] = {1: price, offer_count: offer_price}
+            offer = offer.strip()
+            self.prices[item] = {1: price}
+            if offer:
+                offer = offer.split(' for ')
+                # assumes offer is always same item as item in that row
+                offer_count = int(offer[0].strip().replace(item, ''))
+                offer_price = int(offer[1].strip())
+                self.prices[item][offer_count] = offer_price
             
     def get_price(self, skus:str) -> int:
         """Return total price for all SKUs"""
@@ -36,3 +41,4 @@ class Checkout:
 
 def checkout(skus):
     raise NotImplementedError()
+
